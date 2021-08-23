@@ -1,0 +1,3 @@
+- [x] Setup the React application
+- [x] Add the video feed
+- [x] Detect faces

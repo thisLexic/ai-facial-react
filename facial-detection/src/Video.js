@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Webcam from "react-webcam";
 
 import { loadModels, getFaces, drawFaces } from "./Video_AI";
@@ -12,12 +12,13 @@ const videoConstraints = {
 };
 
 export default function Video() {
+  const [isModelsReady, setIsModelsReady] = useState(false);
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
   let interval;
 
   useEffect(() => {
-    loadModels();
+    loadModels().then(setIsModelsReady(true));
   }, []);
 
   const handleWebcamPlay = async () => {
@@ -28,6 +29,8 @@ export default function Video() {
       webcamRef.current.video
     );
     faceapi.matchDimensions(canvasRef.current, displaySize);
+
+    while (!isModelsReady) {}
 
     interval = setInterval(async () => {
       const { resizedDetections } = await getFaces({

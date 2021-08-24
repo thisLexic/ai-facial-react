@@ -2,11 +2,11 @@ import * as faceapi from "face-api.js";
 
 export const loadModels = () => {
   const modelsPath = process.env.PUBLIC_URL + "/models";
-  const otherModelsPath = process.env.PUBLIC_URL + "/other_models";
-
-  faceapi.nets.tinyFaceDetector.loadFromUri(modelsPath);
-  faceapi.nets.faceLandmark68Net.loadFromUri(otherModelsPath);
-  faceapi.nets.faceExpressionNet.loadFromUri(otherModelsPath);
+  return Promise.all([
+    faceapi.nets.tinyFaceDetector.loadFromUri(modelsPath),
+    faceapi.nets.faceLandmark68Net.loadFromUri(modelsPath),
+    faceapi.nets.faceExpressionNet.loadFromUri(modelsPath),
+  ]);
 };
 
 export const getFaces = async ({ video, displaySize }) => {
